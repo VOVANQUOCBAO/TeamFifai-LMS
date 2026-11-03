@@ -27,7 +27,7 @@ TeamFifai-LMS/
 | Thành viên | Chỗ đặt code chính | Việc phối hợp |
 |---|---|---|
 | P1 — Backend nền tảng | `backend/src/config`, `db`, `middleware`; modules `auth`, `catalog`, `readers`, `storage` | Tổng hợp ERD, migration, DB và deploy |
-| P2 — Backend nghiệp vụ, nhóm trưởng | Modules `loans`, `reservations`, `fines`, `reports`, `notifications`; `backend/src/jobs` | Chốt nghiệp vụ, use case, phân công và ghép hệ thống |
+| P2 — Backend nghiệp vụ | Modules `loans`, `reservations`, `fines`, `reports`, `notifications`; `backend/src/jobs` | Chốt nghiệp vụ, use case, phân công và ghép hệ thống |
 | P3 — Android Admin | `admin-android/` | Luồng ADMIN/THU_THU; API của P1/P2 |
 | P4 — Flutter Client | `client-flutter/` | Luồng BAN_DOC; API và nhắc hạn của P1/P2 |
 
