@@ -1,0 +1,8 @@
+openapi: 3.0.3
+info:
+  title: TeamFifai Library API
+  version: 0.0.0-draft
+  description: >-
+    Khung dac ta, chua co endpoint duoc trien khai.
+    P1 tong hop API nen tang; P2 bo sung nghiep vu; P3/P4 review schema.
+paths: {}

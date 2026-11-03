@@ -1,0 +1,38 @@
+name: Công việc
+description: Giao một phần việc có người phụ trách và đầu ra rõ ràng
+title: "[P?] "
+body:
+  - type: input
+    id: owner
+    attributes:
+      label: Người phụ trách và người review
+      placeholder: "P2 / reviewer P1"
+    validations:
+      required: true
+  - type: input
+    id: location
+    attributes:
+      label: Thư mục hoặc module
+      placeholder: "backend/src/modules/loans"
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Việc cần làm và đầu ra
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Tiêu chí hoàn thành và cách kiểm tra
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Phụ thuộc và tài liệu liên quan
+  - type: input
+    id: deadline
+    attributes:
+      label: Hạn dự kiến

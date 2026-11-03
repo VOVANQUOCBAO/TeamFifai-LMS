@@ -1,0 +1,7 @@
+# Chua bat auto-review: can dien GitHub username that cua bon thanh vien.
+# Xem docs/OWNERSHIP.md. Dong bat dau # la huong dan, khong gan reviewer.
+# Vi du sau khi nhom xac nhan tai khoan:
+# /backend/src/modules/auth/ @username-nguoi-1
+# /backend/src/modules/loans/ @username-nguoi-2
+# /admin-android/ @username-nguoi-3
+# /client-flutter/ @username-nguoi-4

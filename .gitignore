@@ -1,0 +1,48 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+*.jks
+*.keystore
+key.properties
+keystore.properties
+local.properties
+
+# Node
+node_modules/
+coverage/
+.nyc_output/
+*.log
+
+# Android and IDE output
+.gradle/
+.idea/
+*.iml
+.cxx/
+**/build/
+captures/
+
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+
+# Generated deliverables and temporary output
+*.apk
+*.aab
+*.mp4
+*.mov
+*.zip
+tmp/
+temp/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
