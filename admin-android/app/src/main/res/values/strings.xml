@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Admin Thu vien</string>
+    <string name="login_placeholder">Man hinh dang nhap (chua lam)</string>
+</resources>
