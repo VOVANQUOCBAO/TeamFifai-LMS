@@ -59,11 +59,12 @@ class ApiService {
           status: response.statusCode,
         );
       }
-      if (json == null)
+      if (json == null) {
         throw const AppError(
           'INVALID_RESPONSE',
           'Dữ liệu máy chủ không hợp lệ.',
         );
+      }
       return json;
     } on TimeoutException {
       throw const AppError(

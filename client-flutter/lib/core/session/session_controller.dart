@@ -85,7 +85,8 @@ class SessionController extends ChangeNotifier {
   }
 
   Future<void> checkExpiry() async {
-    if (current != null && _expired(current!.token))
+    if (current != null && _expired(current!.token)) {
       await logout(expired: true);
+    }
   }
 }
