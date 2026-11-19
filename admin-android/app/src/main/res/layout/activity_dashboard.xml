@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="#F5F6FA">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="TEAMFIFAI"
+      android:textColor="#263B80"
+      android:textSize="26sp"
+      android:textStyle="bold" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="4dp"
+      android:text="HỆ THỐNG QUẢN LÝ THƯ VIỆN"
+      android:textColor="#666666"
+      android:textSize="13sp" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="28dp"
+      android:text="Xin chào!"
+      android:textColor="#222222"
+      android:textSize="24sp"
+      android:textStyle="bold" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="6dp"
+      android:text="Chọn chức năng quản lý bên dưới"
+      android:textColor="#777777"
+      android:textSize="14sp" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="28dp"
+      android:text="QUẢN LÝ THƯ VIỆN"
+      android:textColor="#263B80"
+      android:textSize="16sp"
+      android:textStyle="bold" />
+
+    <GridLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="12dp"
+      android:columnCount="2">
+
+      <TextView
+        android:id="@+id/btnBooks"
+        android:layout_width="0dp"
+        android:layout_height="110dp"
+        android:layout_columnWeight="1"
+        android:layout_margin="6dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:text="📚&#10;Quản lý sách"
+        android:textColor="#263B80"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+      <TextView
+        android:id="@+id/btnCategories"
+        android:layout_width="0dp"
+        android:layout_height="110dp"
+        android:layout_columnWeight="1"
+        android:layout_margin="6dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:text="📂&#10;Danh mục"
+        android:textColor="#263B80"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+      <TextView
+        android:id="@+id/btnReaders"
+        android:layout_width="0dp"
+        android:layout_height="110dp"
+        android:layout_columnWeight="1"
+        android:layout_margin="6dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:text="👥&#10;Bạn đọc"
+        android:textColor="#263B80"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+      <TextView
+        android:id="@+id/btnLoans"
+        android:layout_width="0dp"
+        android:layout_height="110dp"
+        android:layout_columnWeight="1"
+        android:layout_margin="6dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:text="📖&#10;Mượn / Trả"
+        android:textColor="#263B80"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+      <TextView
+        android:id="@+id/btnFines"
+        android:layout_width="0dp"
+        android:layout_height="110dp"
+        android:layout_columnWeight="1"
+        android:layout_margin="6dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:text="💰&#10;Quản lý phạt"
+        android:textColor="#263B80"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+      <TextView
+        android:id="@+id/btnReports"
+        android:layout_width="0dp"
+        android:layout_height="110dp"
+        android:layout_columnWeight="1"
+        android:layout_margin="6dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:text="📊&#10;Báo cáo"
+        android:textColor="#263B80"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    </GridLayout>
+
+  </LinearLayout>
+</ScrollView>
