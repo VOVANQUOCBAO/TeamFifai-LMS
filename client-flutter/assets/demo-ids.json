@@ -1,0 +1,38 @@
+{
+  "ids": {
+    "adminUserId": "10000000-0000-4000-8000-000000000001",
+    "librarianUserId": "10000000-0000-4000-8000-000000000002",
+    "readerUserId": "10000000-0000-4000-8000-000000000003",
+    "secondReaderUserId": "10000000-0000-4000-8000-000000000004",
+    "readerId": "20000000-0000-4000-8000-000000000001",
+    "secondReaderId": "20000000-0000-4000-8000-000000000002",
+    "bookId": "30000000-0000-4000-8000-000000000001",
+    "categoryId": "40000000-0000-4000-8000-000000000001",
+    "availableCopyId": "50000000-0000-4000-8000-000000000001",
+    "borrowedCopyId": "50000000-0000-4000-8000-000000000002",
+    "existingLoanId": "60000000-0000-4000-8000-000000000001",
+    "newLoanExampleId": "60000000-0000-4000-8000-000000000002"
+  },
+  "demoAccounts": [
+    {
+      "email": "admin@thuviendemo.test",
+      "matKhau": "DemoLib!4211",
+      "vaiTro": "ADMIN",
+      "userId": "10000000-0000-4000-8000-000000000001"
+    },
+    {
+      "email": "thuthu@thuviendemo.test",
+      "matKhau": "DemoLib!4211",
+      "vaiTro": "THU_THU",
+      "userId": "10000000-0000-4000-8000-000000000002"
+    },
+    {
+      "email": "bandoc@thuviendemo.test",
+      "matKhau": "DemoLib!4211",
+      "vaiTro": "BAN_DOC",
+      "userId": "10000000-0000-4000-8000-000000000003",
+      "banDocId": "20000000-0000-4000-8000-000000000001"
+    }
+  ],
+  "note": "Tài khoản chỉ dùng cho DB demo. MOCK_TOKEN trong fixture không phải JWT hợp lệ."
+}
