@@ -64,7 +64,7 @@ class MockLibraryRepository implements LibraryRepository {
   }) async {
     await _reader(token);
     final all = PageResult.fromJson(
-      await _fixture('books-before-loan'),
+      await _fixture('books-after-loan'),
       Book.fromJson,
     ).data;
     final term = keyword.trim().toLowerCase();

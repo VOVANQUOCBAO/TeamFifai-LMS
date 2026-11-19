@@ -28,6 +28,7 @@ void main() {
     await tester.tap(find.text('Đăng nhập'));
     await tester.pumpAndSettle();
     expect(find.text('Dế Mèn phiêu lưu ký'), findsOneWidget);
+    expect(find.text('Hiện chưa có bản rảnh'), findsOneWidget);
     expect(find.text('DEMO'), findsOneWidget);
     await tester.enterText(find.byType(TextField), 'khong-co-sach-nay');
     await tester.tap(find.byTooltip('Tìm kiếm'));
