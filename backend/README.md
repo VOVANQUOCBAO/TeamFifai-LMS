@@ -1,65 +1,61 @@
-# Backend thư viện dùng chung
+# Backend thư viện · Tuần 11
 
-Đây là khung thư mục để hai người backend chia việc và commit đúng phạm vi. Chưa có ứng dụng chạy, API, kết nối DB, SQL, dependencies hay kiểm thử được triển khai. Chưa chạy kiểm thử nghiệp vụ.
+Phần nền tảng do Nguyễn Đức Quang phụ trách. Backend dùng Node.js 20, Express 4, PostgreSQL, `pg`, bcrypt và JWT. [OpenAPI v1.0.0](../contracts/openapi.yaml) và [hợp đồng DB](../contracts/database.md) là nguồn chuẩn cho mốc tuần 11. [Tài liệu gọi API](docs/api.md) có quyền và lệnh kiểm tra.
 
-Dự kiến dùng Node.js 20, Express 4, CommonJS và `pg` theo hợp đồng LIB21-v1. Nhóm cần chốt phiên bản và lockfile khi người 1 tạo ứng dụng. Hai app Android Admin và Flutter Client cùng gọi một backend, dùng một PostgreSQL/Storage trên Supabase; backend dự kiến deploy trên Render. Không tạo server, Pool, auth hoặc DB riêng cho người 2.
+## 1. Cài đặt và cấu hình
 
-## Người sở hữu
+Từ thư mục `backend/`, dùng Node.js 20 và PostgreSQL 15 trở lên. Tạo một database demo trống rồi chạy:
 
-| Khu vực | Người phụ trách | Cách phối hợp |
-| --- | --- | --- |
-| `src/config/`, `src/db/`, `src/middleware/` | Người 1 nền tảng | Cung cấp cấu hình, Pool, transaction helper, xác thực, quyền và xử lý lỗi chung. |
-| `src/shared/` | Theo từng file | Người 1 sở hữu `AppError.js`, `response.js`; người 2 sở hữu `circulation.service.js`. Chốt giao diện trước khi tạo hoặc sửa file chung. |
-| `src/modules/auth/` | Người 1 | Đăng ký, đăng nhập, thông tin người dùng và quản lý tài khoản nhân viên. |
-| `src/modules/catalog/` | Người 1 | Phân loại, nhan đề và bản sách; gọi service lưu thông khi cần. |
-| `src/modules/readers/` | Người 1 | Bạn đọc, thẻ, hạn thẻ và giới hạn; gọi service lưu thông khi đổi điều kiện mượn. |
-| `src/modules/storage/` | Người 1 | Upload ảnh bìa và tích hợp Storage. |
-| `src/modules/loans/` | Người 2 nghiệp vụ | Mượn, trả, gia hạn và phiếu cá nhân. |
-| `src/modules/reservations/` | Người 2 | Đặt trước, giữ 48 giờ, hủy và hoàn tác. |
-| `src/modules/fines/` | Người 2 | Biểu phạt phiên bản, tính và thu phạt. |
-| `src/modules/reports/` | Người 2 | Bốn báo cáo theo định nghĩa đã chốt. |
-| `src/modules/notifications/`, `src/jobs/` | Người 2 | Thông báo, hết giữ và nhắc hạn; người 1 hỗ trợ scheduler/môi trường. |
-| `database/` | Người 1 tổng hợp; cả hai đóng góp theo phạm vi | Người 1 cấp số migration trước; người 2 gửi migration/seed nghiệp vụ để review. |
-| `tests/` | Người viết chức năng tương ứng | Ca liên phần có một owner, cùng người liên quan review. |
-| `scripts/` | Người 1 điều phối | Chỉ thêm script khi có nhu cầu thực và đã review tác động DB. |
+```powershell
+npm ci
+Copy-Item .env.example .env
+node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"
+```
 
-## Cấu trúc module
+Đặt chuỗi kết nối demo trong `DATABASE_URL` và đầu ra lệnh sinh khóa trong `JWT_SECRET` của `.env`. `PORT` mặc định là `3000`. `DATABASE_SSL` mặc định là `true`. Đặt `false` cho PostgreSQL thử nghiệm cục bộ chạy không TLS. Khi máy chủ dùng CA riêng, `DATABASE_CA_CERT` nhận chứng chỉ CA PEM, với xuống dòng thật hoặc `\n`.
 
-Mỗi module dùng thư mục phẳng. Chỉ tạo file khi có triển khai thật:
+## 2. Dựng dữ liệu và chạy
 
-- `routes.js`: Express Router của module, xuất bằng CommonJS; không tự `listen`.
-- `controller.js`: đọc HTTP input và trả response.
-- `service.js`: kiểm tra và điều phối nghiệp vụ.
-- `repository.js`: truy vấn SQL; nhận cùng DB client khi ở trong transaction.
-- `validation.js`: kiểm tra request khi module cần.
+```powershell
+npm run db:schema
+npm run db:seed
+npm start
+```
 
-Không cần tạo đủ năm file cho một module đơn giản. `.gitkeep` chỉ giúp Git lưu thư mục đang rỗng; xóa nó khi thư mục có file thật. Không dùng file placeholder làm bằng chứng chức năng đã hoàn thành.
+`schema.sql` là migration khởi đầu, dựng 10 bảng, khóa ngoại, ràng buộc và các index. `seed.sql` thêm dữ liệu tuần 11 cho DB demo. Hai script dùng giao dịch riêng. Chạy lại giữ dữ liệu đã có theo ID, kể cả trạng thái lưu thông và thời hạn đã seed trước đó. Để dựng một bộ demo có thời hạn mới, dùng database thử nghiệm trống. `npm start` chỉ chạy máy chủ HTTP.
 
-## File chung dự kiến
+Gọi `http://localhost:3000/health` để kiểm tra kết nối PostgreSQL. Hai app dùng base URL `http://localhost:3000/api/v1/` khi truy cập được máy này, hoặc base URL HTTPS của Render khi chạy live.
 
-Người 1 sẽ tạo `src/app.js` để dựng và mount router, `src/index.js` để khởi động server. Chưa có hai file này trong scaffold.
+## 3. Kiểm thử
 
-Người 1 dự kiến cung cấp `src/db/index.js` với một Pool và helper `trongGiaoDich`, `src/middleware/auth.js`, `src/middleware/error.js`, `src/shared/AppError.js`, `src/shared/response.js`. Mọi truy vấn của cùng transaction phải dùng cùng client; không xen `pool.query` vào transaction.
+Dùng riêng database PostgreSQL thử nghiệm đã dựng schema và seed ở bước 2. Suite có thử chèn phiếu đang mở trùng trong một transaction được rollback.
 
-Người 2 dự kiến tạo `src/shared/circulation.service.js` với giao diện đã chốt cùng người 1:
+```powershell
+$env:TEST_DATABASE_URL = 'postgresql://postgres:local-password@127.0.0.1:5432/thu_vien_demo'
+npm test
+```
 
-- `dongBoGiuCho(client, sachId, now)`
-- `layKhaDung(client, sachIds, banDocId, now)`
-- `kiemTraSuaBan(client, banSachId, thayDoi)`
+Dùng `TEST_DATABASE_SSL=true` nếu DB kiểm thử yêu cầu TLS. Kiểm tra bộ hợp đồng từ thư mục gốc bằng `python contracts/verify_contracts.py`.
 
-Đây là vị trí và tên dự kiến, chưa phải các hàm đã được triển khai. Service dùng client được truyền vào; không tạo Pool hoặc transaction lồng độc lập.
+## 4. Supabase và Render
 
-## Quy tắc phối hợp
+1. Trong Supabase, mở **Connect → Session pooler**, lấy chuỗi kết nối cổng `5432`. Mã hóa percent cho ký tự đặc biệt trong mật khẩu nếu tự điền URI. Dùng PostgreSQL owner của dự án demo để chạy `npm run db:schema` rồi `npm run db:seed` với `DATABASE_SSL=true` và CA phù hợp. Có thể áp dụng lần lượt hai tệp SQL trong Supabase SQL Editor. Các bảng bật Row Level Security và backend truy cập qua kết nối `pg`.
+2. Trong Render, tạo **Web Service** từ repository nhóm. Chọn nhánh `member1/backend`, **Root Directory** `backend`, **Build Command** `npm ci`, **Start Command** `npm start`, **Health Check Path** `/health`. Dùng **Node** và đặt `NODE_VERSION=20.20.2` theo stack của môn. Render cấp `PORT`.
+3. Đặt `NODE_ENV=production`, `DATABASE_URL`, `DATABASE_SSL=true`, `DATABASE_CA_CERT` nếu cần và khóa `JWT_SECRET` riêng trong Render Environment. Tuần 11 dùng PostgreSQL trực tiếp qua `pg`. Các biến Supabase Storage sẽ được cấu hình khi tích hợp ảnh bìa.
+4. Sau khi Render triển khai, kiểm tra `GET https://<dịch-vụ>.onrender.com/health`, thử đăng nhập và gọi ba API đọc dữ liệu. Ghi URL HTTPS và SHA đã triển khai theo [bàn giao](../handoff/member1.md). Base URL của app có hậu tố `/api/v1/`.
 
-1. Dùng cùng hợp đồng trong `docs/` ở repo, thống nhất tên field/enum, quyền và response trước khi code. API/JSON nháp phải ghi rõ trạng thái thiết kế.
-2. Mọi thay đổi trạng thái lưu thông đi qua service nghiệp vụ. CRUD metadata không được tự ghi `DANG_MUON` hoặc `GIU_CHO` để sửa tồn kho.
-3. Hai người backend cùng tuân cơ chế transaction/khóa đã chốt, kể cả job và thao tác đổi thẻ/tình trạng bản ảnh hưởng quyền mượn. Không gọi mạng ngoài khi giữ transaction.
-4. Người 1 cấp số migration; người 2 không tự lấy số trùng hoặc sửa migration đã được áp dụng. Xem `database/README.md`.
-5. Mỗi người tự commit phần mình bằng tài khoản GitHub riêng. PR ghi phần thay đổi, ảnh hưởng API/DB, kiểm tra thật đã chạy và việc còn thiếu.
-6. Ghi `CHƯA CHẠY` khi chưa thực thi kiểm tra; không tạo test rỗng hoặc số liệu giả để ghi nhận hoàn thành.
+[Chuỗi kết nối và CA của Supabase](https://supabase.com/docs/guides/database/connecting-to-postgres) · [Triển khai Express trên Render](https://render.com/docs/deploy-node-express-app) · [Chọn phiên bản Node trên Render](https://render.com/docs/node-version)
 
-## Cấu hình và trạng thái chạy
+## Dữ liệu demo
 
-`.env.example` chỉ liệt kê tên biến dự kiến, tất cả giá trị đang để trống. Khi bắt đầu triển khai, người 1 chốt biến thực sự cần dùng, sao chép sang file môi trường cục bộ và điền giá trị qua kênh phù hợp. Không commit `.env`, chuỗi kết nối, JWT secret, service key hoặc job secret. Không đưa service key/job secret vào hai app.
+| Email | Vai trò |
+|---|---|
+| `admin@thuviendemo.test` | `ADMIN` |
+| `thuthu@thuviendemo.test` | `THU_THU` |
+| `bandoc@thuviendemo.test` | `BAN_DOC` |
 
-Scaffold chưa có `package.json`, lockfile, entry point hoặc lệnh chạy. Các lệnh cài đặt, migration, seed, kiểm thử và deploy chỉ được ghi là chạy được sau khi được triển khai và xác minh. Chưa cài dependencies hay gọi dịch vụ ngoài.
+Ba tài khoản trong [hợp đồng demo](../contracts/demo-ids.json) dùng mật khẩu `DemoLib!4211` trên DB thử nghiệm. Seed gồm 20 nhan đề, 40 bản, 10 bạn đọc và 12 tài khoản. `BD0001` đủ điều kiện mượn `BS0001`. `BD0002` đang mượn `BS0002`. `BD0003` hết hạn, `BD0004` có thẻ khóa, `BD0005` còn nợ 12.000 VNĐ và `BD0006` đang mượn 2/3 bản. Tài khoản `bandoc10@thuviendemo.test` để kiểm tra khóa đăng nhập.
+
+## Bàn giao module mượn
+
+`src/db.js` xuất `{ pool }`. `src/middleware/auth.js` xuất `{ xacThuc, choPhep }`, trong đó `xacThuc` đặt `req.nguoiDung = { id, vaiTro }`. Người 2 thay router tại `src/modules/loans/index.js`, đã mount dưới `/api/v1`. Thêm `express.json()` trên route ghi sau middleware xác thực/phân quyền khi xử lý body. Dùng một client lấy từ `pool.connect()` cho toàn bộ transaction, khóa `ban_doc` rồi `ban_sach` theo hợp đồng DB và `release()` ở `finally`.
