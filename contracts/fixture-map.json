@@ -1,0 +1,71 @@
+{
+  "login-request.json": {
+    "schema": "LoginRequest"
+  },
+  "login-admin.json": {
+    "schema": "LoginResponse"
+  },
+  "login-thu_thu.json": {
+    "schema": "LoginResponse"
+  },
+  "login-ban_doc.json": {
+    "schema": "LoginResponse"
+  },
+  "books-before-loan.json": {
+    "schema": "BookListResponse"
+  },
+  "book-detail.json": {
+    "schema": "BookDetailResponse"
+  },
+  "readers.json": {
+    "schema": "ReaderListResponse"
+  },
+  "create-loan-request.json": {
+    "schema": "CreateLoanRequest"
+  },
+  "create-loan-response.json": {
+    "schema": "LoanResponse"
+  },
+  "my-loans-empty.json": {
+    "schema": "LoanListResponse"
+  },
+  "my-loans-after-loan.json": {
+    "schema": "LoanListResponse"
+  },
+  "books-after-loan.json": {
+    "schema": "BookListResponse"
+  },
+  "health.json": {
+    "schema": "HealthResponse"
+  },
+  "error-400-du_lieu_khong_hop_le.json": {
+    "schema": "ErrorResponse"
+  },
+  "error-401-token_khong_hop_le.json": {
+    "schema": "ErrorResponse"
+  },
+  "error-401-sai_thong_tin_dang_nhap.json": {
+    "schema": "ErrorResponse"
+  },
+  "error-403-khong_co_quyen.json": {
+    "schema": "ErrorResponse"
+  },
+  "error-409-ban_sach_khong_san_sang.json": {
+    "schema": "ErrorResponse"
+  },
+  "error-409-the_het_han.json": {
+    "schema": "ErrorResponse"
+  },
+  "error-409-con_no_phat.json": {
+    "schema": "ErrorResponse"
+  },
+  "error-409-vuot_gioi_han_muon.json": {
+    "schema": "ErrorResponse"
+  },
+  "error-409-ban_doc_bi_khoa.json": {
+    "schema": "ErrorResponse"
+  },
+  "error-501-chuc_nang_chua_tich_hop.json": {
+    "schema": "ErrorResponse"
+  }
+}

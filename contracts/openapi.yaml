@@ -1,0 +1,691 @@
+openapi: 3.0.3
+info:
+  title: Đề 21 - Tuần 11 - Hợp đồng chung
+  version: 1.0.0
+  description: Người 1 làm nền tảng; người 3/4 làm app; người 2 tích hợp và làm loans
+    sau cùng. URL tương đối tới cùng origin backend.
+servers:
+- url: /
+security:
+- bearerAuth: []
+paths:
+  /health:
+    get:
+      operationId: health
+      security: []
+      x-owner: member1
+      responses:
+        '200':
+          description: Backend và DB hoạt động
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '500':
+          description: Lỗi hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/auth/dang-nhap:
+    post:
+      operationId: login
+      security: []
+      x-owner: member1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Đăng nhập thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Dữ liệu đầu vào sai
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Thiếu/sai/hết JWT hoặc sai đăng nhập
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Không có quyền hoặc tài khoản bị khóa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Lỗi hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/sach:
+    get:
+      operationId: listBooks
+      x-owner: member1
+      x-roles: &id001
+      - ADMIN
+      - THU_THU
+      - BAN_DOC
+      parameters:
+      - name: tuKhoa
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: phanLoai
+        in: query
+        required: false
+        schema: &id002
+          type: string
+          format: uuid
+      - &id003
+        name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+      - &id004
+        name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+      responses:
+        '200':
+          description: Danh sách nhan đề, có số bản TOT + RANH
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookListResponse'
+        '400':
+          description: Dữ liệu đầu vào sai
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Thiếu/sai/hết JWT hoặc sai đăng nhập
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Không có quyền hoặc tài khoản bị khóa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Lỗi hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/sach/{id}:
+    get:
+      operationId: getBook
+      x-owner: member1
+      x-roles: *id001
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema: *id002
+      responses:
+        '200':
+          description: Chi tiết và danh sách bản sách
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookDetailResponse'
+        '400':
+          description: Dữ liệu đầu vào sai
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Thiếu/sai/hết JWT hoặc sai đăng nhập
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Không có quyền hoặc tài khoản bị khóa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Không tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Lỗi hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/ban-doc:
+    get:
+      operationId: listReaders
+      x-owner: member1
+      x-roles:
+      - ADMIN
+      - THU_THU
+      parameters:
+      - name: tuKhoa
+        in: query
+        required: false
+        schema:
+          type: string
+      - *id003
+      - *id004
+      responses:
+        '200':
+          description: Danh sách cho nhân viên chọn bạn đọc
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReaderListResponse'
+        '400':
+          description: Dữ liệu đầu vào sai
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Thiếu/sai/hết JWT hoặc sai đăng nhập
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Không có quyền hoặc tài khoản bị khóa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Lỗi hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/phieu-muon:
+    post:
+      operationId: createLoan
+      x-owner: member2
+      x-roles:
+      - ADMIN
+      - THU_THU
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLoanRequest'
+      responses:
+        '201':
+          description: Tạo phiếu thật và cập nhật bản sách trong transaction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanResponse'
+        '400':
+          description: Dữ liệu đầu vào sai
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Thiếu/sai/hết JWT hoặc sai đăng nhập
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Không có quyền hoặc tài khoản bị khóa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Không tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Xung đột nghiệp vụ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Lỗi hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '501':
+          description: Chờ người 2 tích hợp; không dùng trong nghiệm thu bản cuối
+            tuần 11
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/ban-doc/toi/dang-muon:
+    get:
+      operationId: listMyLoans
+      x-owner: member2
+      x-roles:
+      - BAN_DOC
+      parameters:
+      - *id003
+      - *id004
+      description: Định danh từ JWT sub -> ban_doc.nguoi_dung_id. Không nhận banDocId
+        từ query.
+      responses:
+        '200':
+          description: Phiếu đang mở của đúng người gọi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanListResponse'
+        '400':
+          description: Dữ liệu đầu vào sai
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Thiếu/sai/hết JWT hoặc sai đăng nhập
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Không có quyền hoặc tài khoản bị khóa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Không tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Lỗi hệ thống
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '501':
+          description: Chờ người 2 tích hợp; không dùng trong nghiệm thu bản cuối
+            tuần 11
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      required:
+      - id
+      - hoTen
+      - vaiTro
+      properties:
+        id: *id002
+        hoTen:
+          type: string
+        vaiTro:
+          type: string
+          enum: *id001
+      additionalProperties: false
+    LoginRequest:
+      type: object
+      required:
+      - email
+      - matKhau
+      properties:
+        email:
+          type: string
+          format: email
+        matKhau:
+          type: string
+          minLength: 1
+      additionalProperties: false
+    LoginResponse:
+      type: object
+      required:
+      - data
+      properties:
+        data:
+          type: object
+          required:
+          - token
+          - nguoiDung
+          properties:
+            token:
+              type: string
+            nguoiDung:
+              $ref: '#/components/schemas/User'
+          additionalProperties: false
+      additionalProperties: false
+    Meta:
+      type: object
+      required:
+      - page
+      - pageSize
+      - total
+      properties:
+        page:
+          type: integer
+          minimum: 1
+        pageSize:
+          type: integer
+          minimum: 1
+          maximum: 100
+        total: &id005
+          type: integer
+          minimum: 0
+      additionalProperties: false
+    Book:
+      type: object
+      required:
+      - id
+      - nhanDe
+      - tacGia
+      - phanLoaiId
+      - nxb
+      - namXb
+      - isbn
+      - anhBia
+      - soBanRanh
+      properties:
+        id: *id002
+        nhanDe: &id006
+          type: string
+        tacGia: &id007
+          type: string
+        phanLoaiId: *id002
+        nxb: &id008
+          type: string
+          nullable: true
+        namXb: &id009
+          type: integer
+          nullable: true
+        isbn: &id010
+          type: string
+          nullable: true
+        anhBia: &id011
+          type: string
+          nullable: true
+        soBanRanh: *id005
+      additionalProperties: false
+    BookCopy:
+      type: object
+      required:
+      - id
+      - sachId
+      - maCaBiet
+      - viTriKe
+      - tinhTrang
+      - trangThai
+      properties:
+        id: *id002
+        sachId: *id002
+        maCaBiet:
+          type: string
+        viTriKe:
+          type: string
+        tinhTrang:
+          type: string
+          enum:
+          - TOT
+          - HONG
+          - MAT
+        trangThai:
+          type: string
+          enum:
+          - RANH
+          - DANG_MUON
+          - GIU_CHO
+          - HONG
+      additionalProperties: false
+    BookDetail:
+      type: object
+      required:
+      - id
+      - nhanDe
+      - tacGia
+      - phanLoaiId
+      - nxb
+      - namXb
+      - isbn
+      - anhBia
+      - soBanRanh
+      - banSach
+      properties:
+        id: *id002
+        nhanDe: *id006
+        tacGia: *id007
+        phanLoaiId: *id002
+        nxb: *id008
+        namXb: *id009
+        isbn: *id010
+        anhBia: *id011
+        soBanRanh: *id005
+        banSach:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookCopy'
+      additionalProperties: false
+    BookDetailResponse:
+      type: object
+      required:
+      - data
+      properties:
+        data:
+          $ref: '#/components/schemas/BookDetail'
+      additionalProperties: false
+    Reader:
+      type: object
+      required:
+      - id
+      - nguoiDungId
+      - maThe
+      - hoTen
+      - lopKhoa
+      - hanThe
+      - trangThai
+      - gioiHanMuon
+      - soDangMuon
+      - tienPhatConNo
+      properties:
+        id: *id002
+        nguoiDungId: *id002
+        maThe:
+          type: string
+        hoTen:
+          type: string
+        lopKhoa:
+          type: string
+        hanThe:
+          type: string
+          format: date
+        trangThai:
+          type: string
+          enum:
+          - BINH_THUONG
+          - KHOA
+        gioiHanMuon:
+          type: integer
+          minimum: 1
+        soDangMuon: *id005
+        tienPhatConNo: *id005
+      additionalProperties: false
+    CreateLoanRequest:
+      type: object
+      required:
+      - banDocId
+      - banSachId
+      properties:
+        banDocId: *id002
+        banSachId: *id002
+      additionalProperties: false
+    Loan:
+      type: object
+      required:
+      - id
+      - banDocId
+      - banSachId
+      - nhanDe
+      - maCaBiet
+      - muonLuc
+      - hanTra
+      - trangThai
+      properties:
+        id: *id002
+        banDocId: *id002
+        banSachId: *id002
+        nhanDe:
+          type: string
+        maCaBiet:
+          type: string
+        muonLuc: &id012
+          type: string
+          format: date-time
+        hanTra: *id012
+        trangThai:
+          type: string
+          enum:
+          - DANG_MUON
+          - DA_TRA
+      additionalProperties: false
+    LoanResponse:
+      type: object
+      required:
+      - data
+      properties:
+        data:
+          $ref: '#/components/schemas/Loan'
+      additionalProperties: false
+    BookListResponse:
+      type: object
+      required:
+      - data
+      - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Book'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ReaderListResponse:
+      type: object
+      required:
+      - data
+      - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reader'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    LoanListResponse:
+      type: object
+      required:
+      - data
+      - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Loan'
+        meta:
+          $ref: '#/components/schemas/Meta'
+      additionalProperties: false
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              enum:
+              - DU_LIEU_KHONG_HOP_LE
+              - SAI_THONG_TIN_DANG_NHAP
+              - TOKEN_KHONG_HOP_LE
+              - TAI_KHOAN_BI_KHOA
+              - KHONG_CO_QUYEN
+              - KHONG_TIM_THAY
+              - THE_HET_HAN
+              - BAN_DOC_BI_KHOA
+              - CON_NO_PHAT
+              - VUOT_GIOI_HAN_MUON
+              - BAN_SACH_KHONG_SAN_SANG
+              - CHUC_NANG_CHUA_TICH_HOP
+              - LOI_HE_THONG
+            message:
+              type: string
+          additionalProperties: false
+      additionalProperties: false
+    HealthResponse:
+      type: object
+      required:
+      - data
+      properties:
+        data:
+          type: object
+          required:
+          - status
+          - database
+          properties:
+            status:
+              type: string
+              enum:
+              - ok
+            database:
+              type: string
+              enum:
+              - ok
+          additionalProperties: false
+      additionalProperties: false

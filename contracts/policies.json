@@ -1,0 +1,44 @@
+{
+  "contractVersion": "1.0.0",
+  "scope": "week11",
+  "apiPrefix": "/api/v1",
+  "appModes": [
+    "mock",
+    "live"
+  ],
+  "roles": [
+    "ADMIN",
+    "THU_THU",
+    "BAN_DOC"
+  ],
+  "bookCopyStatus": [
+    "RANH",
+    "DANG_MUON",
+    "GIU_CHO",
+    "HONG"
+  ],
+  "bookCopyCondition": [
+    "TOT",
+    "HONG",
+    "MAT"
+  ],
+  "readerStatus": [
+    "BINH_THUONG",
+    "KHOA"
+  ],
+  "loanStatus": [
+    "DANG_MUON",
+    "DA_TRA"
+  ],
+  "timestampTransport": "UTC ISO 8601",
+  "displayTimezone": "Asia/Ho_Chi_Minh",
+  "loanDurationHours": 336,
+  "defaultBorrowLimit": 3,
+  "tokenLifetimeHours": 24,
+  "pagination": {
+    "page": 1,
+    "pageSize": 20,
+    "maxPageSize": 100
+  },
+  "note": "Hạn mượn, giới hạn mẫu, thời hạn token là quy ước của nhóm, không phải con số bắt buộc trong PDF."
+}

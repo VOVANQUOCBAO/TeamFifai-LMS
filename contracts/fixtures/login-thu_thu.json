@@ -1,0 +1,10 @@
+{
+  "data": {
+    "token": "MOCK_TOKEN_THU_THU",
+    "nguoiDung": {
+      "id": "10000000-0000-4000-8000-000000000002",
+      "hoTen": "Thủ thư Demo",
+      "vaiTro": "THU_THU"
+    }
+  }
+}
