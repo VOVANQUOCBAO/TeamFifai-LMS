@@ -1,0 +1,19 @@
+{
+  "name": "teamfifai-library-backend",
+  "version": "1.0.0",
+  "private": true,
+  "engines": { "node": ">=20 <21" },
+  "scripts": {
+    "start": "node src/index.js",
+    "db:schema": "node scripts/database.js schema",
+    "db:seed": "node scripts/database.js seed",
+    "test": "node --test --test-concurrency=1 tests/integration/platform.test.js tests/integration/loans.test.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.3",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.16.3"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "KHONG_CO_QUYEN",
+    "message": "Bạn không có quyền thực hiện thao tác này."
+  }
+}

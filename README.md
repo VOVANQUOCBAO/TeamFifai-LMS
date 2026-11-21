@@ -2,7 +2,9 @@
 
 Hệ thống quản lý thư viện trường học cho đồ án INT4211: Android Admin, Flutter Client và một backend dùng chung PostgreSQL.
 
-Repository hiện là **sườn thư mục để phân công và bắt đầu triển khai**. Chưa có ứng dụng chạy, API thật, schema hoàn chỉnh hay APK. Mỗi người tạo project và bổ sung mã nguồn trong đúng khu vực bên dưới.
+**API đang chạy:** https://teamfifai-lms-api.onrender.com/health · base URL app `https://teamfifai-lms-api.onrender.com/api/v1/`
+
+**Trạng thái tuần 11 (nhánh `member2/integration`):** backend có 6 API thật (đăng nhập, sách, chi tiết sách, bạn đọc, cho mượn, sách đang mượn) + `/health`; Android 3 màn hình và Flutter 3 màn hình gọi API thật qua chế độ `live`. Kết quả kiểm thử, việc còn lại và cách deploy Render + Supabase: [docs/integration/README.md](docs/integration/README.md). Tài khoản demo (mật khẩu `DemoLib!4211`): `admin@thuviendemo.test`, `thuthu@thuviendemo.test`, `bandoc@thuviendemo.test`.
 
 ## Bắt đầu từ đâu
 

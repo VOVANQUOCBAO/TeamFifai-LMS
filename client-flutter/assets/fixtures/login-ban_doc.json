@@ -1,0 +1,10 @@
+{
+  "data": {
+    "token": "MOCK_TOKEN_BAN_DOC",
+    "nguoiDung": {
+      "id": "10000000-0000-4000-8000-000000000003",
+      "hoTen": "Bạn đọc Demo",
+      "vaiTro": "BAN_DOC"
+    }
+  }
+}

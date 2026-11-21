@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "BAN_SACH_KHONG_SAN_SANG",
+    "message": "Bản sách không còn sẵn sàng để cho mượn."
+  }
+}

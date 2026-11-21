@@ -1,62 +1,148 @@
-
 package com.teamfifai.libraryadmin.ui.catalog.books;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.graphics.Color;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-public class BooksActivity extends AppCompatActivity {
+import com.google.android.material.textfield.TextInputEditText;
+import com.teamfifai.libraryadmin.R;
+import com.teamfifai.libraryadmin.config.AppConfig;
+import com.teamfifai.libraryadmin.ui.common.StaffActivity;
+import com.teamfifai.libraryadmin.ui.dashboard.DashboardActivity;
+import com.teamfifai.libraryadmin.ui.loans.CreateLoanActivity;
+
+/** Màn hình 2: danh sách sách (RecyclerView), tìm kiếm, số bản rảnh; chọn nhan đề để cho mượn. */
+public class BooksActivity extends StaffActivity {
+    private static final int MENU_DEMO = 1;
+    private static final int MENU_LOGOUT = 2;
+
+    private BooksViewModel viewModel;
+    private BookAdapter adapter;
+    private TextInputEditText edtSearch;
+    private SwipeRefreshLayout swipe;
+    private ProgressBar progress;
+    private View stateBox;
+    private TextView txtState;
+    private TextView txtSummary;
+    private Button btnRetry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!requireStaffSession()) return;
+        setContentView(R.layout.activity_books);
+        bindDemoBanner();
+        setTitle(R.string.books_title);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setSubtitle(session.getHoTen() + " · " + session.getVaiTro());
+        }
 
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(24, 24, 24, 24);
-        layout.setBackgroundColor(Color.rgb(245, 246, 250));
+        edtSearch = findViewById(R.id.edtSearch);
+        swipe = findViewById(R.id.swipe);
+        progress = findViewById(R.id.progress);
+        stateBox = findViewById(R.id.stateBox);
+        txtState = findViewById(R.id.txtState);
+        txtSummary = findViewById(R.id.txtSummary);
+        btnRetry = findViewById(R.id.btnRetry);
 
-        TextView title = new TextView(this);
-        title.setText("QUẢN LÝ SÁCH");
-        title.setTextSize(24);
-        title.setTextColor(Color.rgb(38, 59, 128));
-        title.setGravity(Gravity.CENTER);
-        title.setPadding(0, 20, 0, 30);
+        RecyclerView recycler = findViewById(R.id.recycler);
+        LinearLayoutManager layout = new LinearLayoutManager(this);
+        recycler.setLayoutManager(layout);
+        adapter = new BookAdapter(book -> {
+            Intent intent = new Intent(this, CreateLoanActivity.class);
+            intent.putExtra(CreateLoanActivity.EXTRA_SACH_ID, book.id);
+            intent.putExtra(CreateLoanActivity.EXTRA_NHAN_DE, book.nhanDe);
+            startActivity(intent);
+        });
+        recycler.setAdapter(adapter);
+        recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView rv, int dx, int dy) {
+                if (dy > 0 && layout.findLastVisibleItemPosition() >= adapter.getItemCount() - 3) {
+                    viewModel.loadMore();
+                }
+            }
+        });
 
-        TextView description = new TextView(this);
-        description.setText("Danh sách sách trong thư viện");
-        description.setTextSize(16);
-        description.setTextColor(Color.DKGRAY);
+        findViewById(R.id.btnSearch).setOnClickListener(v -> search());
+        edtSearch.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                search();
+                return true;
+            }
+            return false;
+        });
+        btnRetry.setOnClickListener(v -> viewModel.refresh());
+        swipe.setOnRefreshListener(() -> viewModel.refresh());
 
-        TextView addButton = new TextView(this);
-        addButton.setText("+ Thêm sách");
-        addButton.setTextSize(17);
-        addButton.setTextColor(Color.WHITE);
-        addButton.setGravity(Gravity.CENTER);
-        addButton.setPadding(20, 25, 20, 25);
-        addButton.setBackgroundColor(Color.rgb(38, 59, 128));
+        viewModel = new ViewModelProvider(this).get(BooksViewModel.class);
+        viewModel.state().observe(this, this::render);
+        viewModel.loadIfNeeded();
+    }
 
-        TextView emptyMessage = new TextView(this);
-        emptyMessage.setText("Chưa có dữ liệu sách.");
-        emptyMessage.setTextSize(16);
-        emptyMessage.setTextColor(Color.GRAY);
-        emptyMessage.setGravity(Gravity.CENTER);
-        emptyMessage.setPadding(0, 60, 0, 0);
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        // Quay lại từ màn cho mượn: tải lại để số bản rảnh phản ánh phiếu vừa tạo.
+        viewModel.refresh();
+    }
 
-        layout.addView(title);
-        layout.addView(description);
-        layout.addView(addButton);
+    private void search() {
+        viewModel.search(edtSearch.getText() == null ? "" : edtSearch.getText().toString());
+    }
 
-        layout.addView(emptyMessage, new LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
+    private void render(BooksViewModel.State s) {
+        if (s.error != null && handleAuthError(s.error)) return;
+        adapter.submit(s.items);
+        boolean firstLoad = s.loading && s.items.isEmpty();
+        progress.setVisibility(firstLoad && !swipe.isRefreshing() ? View.VISIBLE : View.GONE);
+        if (!s.loading) swipe.setRefreshing(false);
 
-        setContentView(layout);
+        if (s.error != null) {
+            stateBox.setVisibility(View.VISIBLE);
+            txtState.setText(s.error.userMessage());
+            btnRetry.setVisibility(View.VISIBLE);
+        } else if (s.loaded && !s.loading && s.items.isEmpty()) {
+            stateBox.setVisibility(View.VISIBLE);
+            txtState.setText(R.string.empty_books);
+            btnRetry.setVisibility(View.GONE);
+        } else {
+            stateBox.setVisibility(View.GONE);
+        }
+        txtSummary.setText(s.loaded && s.error == null
+            ? "Hiển thị " + s.items.size() + "/" + s.total + " nhan đề · chạm vào sách để cho mượn"
+            : "");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (AppConfig.isMock()) menu.add(Menu.NONE, MENU_DEMO, 0, R.string.demo_modules);
+        menu.add(Menu.NONE, MENU_LOGOUT, 1, R.string.logout);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == MENU_LOGOUT) {
+            logout();
+            return true;
+        }
+        if (item.getItemId() == MENU_DEMO) {
+            startActivity(new Intent(this, DashboardActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -1,6 +1,6 @@
 # Kiểm thử backend
 
-Đây là cấu trúc chỗ đặt test, chưa chứa test hoặc kết quả đạt. Chưa chọn test runner, chưa cấu hình DB test và chưa chạy kiểm thử.
+Suite tuần 11 tại [`integration/platform.test.js`](integration/platform.test.js) dùng Node.js test runner, HTTP thật qua cổng loopback và PostgreSQL thật. Chạy schema và seed trên database thử nghiệm trống, đặt `TEST_DATABASE_URL` rồi chạy `npm test` từ `backend/`. [Hướng dẫn chạy](../README.md) và [kết quả bàn giao](../../handoff/member1.md).
 
 | Thư mục | Loại kiểm tra dự kiến |
 | --- | --- |

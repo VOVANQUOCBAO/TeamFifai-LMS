@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "SAI_THONG_TIN_DANG_NHAP",
+    "message": "Email hoặc mật khẩu không đúng."
+  }
+}

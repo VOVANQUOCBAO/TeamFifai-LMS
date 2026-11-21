@@ -1,0 +1,27 @@
+# Render Blueprint cho backend tích hợp tuần 11 (Render → New → Blueprint → chọn repo này).
+# Giá trị bí mật (DATABASE_URL, DATABASE_CA_CERT) nhập trên dashboard Render, không commit.
+services:
+  - type: web
+    name: teamfifai-lms-api
+    runtime: node
+    plan: free
+    branch: member2/integration
+    rootDir: backend
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: 20.20.2
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_SSL
+        value: "true"
+      # Supabase → Connect → Session pooler (cổng 5432), không dùng Direct connection (IPv6).
+      - key: DATABASE_URL
+        sync: false
+      # Supabase → Project Settings → Database → SSL Configuration → Download certificate (PEM).
+      - key: DATABASE_CA_CERT
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
