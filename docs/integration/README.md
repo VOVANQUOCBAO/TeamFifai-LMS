@@ -81,7 +81,8 @@ Phiếu thử BD0008/BS0003 còn trong DB demo (chưa xóa); cặp demo chính B
 ## 5. Chưa thực hiện / còn mở
 
 - **Deploy Render + Supabase: ĐÃ XONG** (xem trên). APK Android live trỏ Render đã build.
-- **Flutter: CHƯA build lại trên máy tích hợp** (máy này chưa cài Flutter SDK). P4 báo `flutter analyze` sạch, 20/20 test, build APK mock đạt. Luồng Flutter live mới được chứng minh ở mức API (curl bằng token bạn đọc), chưa chạy app thật với backend.
+- **Flutter: đã build và chạy lại trên máy tích hợp** (Flutter 3.47.5 / Dart 3.13.4, NDK 28.2.13676358): `flutter analyze` → No issues found; `flutter test --timeout 30s` → 20/20 đạt; `flutter build apk --debug --dart-define=APP_MODE=live --dart-define=API_BASE_URL=https://teamfifai-lms-api.onrender.com/api/v1/` → đạt. Trên emulator, đăng nhập `bandoc08@thuviendemo.test` → danh sách 20 sách thật từ Render → tab Đang mượn thấy đúng phiếu BS0003 "Đất rừng phương Nam" vừa tạo trên bản deploy, hạn trả hiển thị giờ Việt Nam.
+- Android live trỏ Render: đăng nhập THU_THU và tải 20 sách thật qua HTTPS (đạt). Thao tác bấm "Cho mượn" trên UI đã nghiệm thu với backend cục bộ (mục 4); trên Render, tạo phiếu được kiểm bằng gọi API trực tiếp.
 - Chưa cài APK lên điện thoại thật.
 - Nghiệp vụ trả, gia hạn, đặt trước 48 giờ, phạt bậc thang, báo cáo, nhắc hạn: mốc sau. Seed hiện 20 nhan đề/40 bản/10 bạn đọc; đề yêu cầu tối thiểu 300/700/200/400 phiếu/40 đặt trước trước khi bảo vệ.
 - Android build: Android Gradle Plugin từ chối đường dẫn có dấu tiếng Việt trên Windows — clone repo vào thư mục không dấu.
