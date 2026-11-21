@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken');
 const { ids, demoAccounts } = require('../../../contracts/demo-ids.json');
 const bookDetail = require('../../../contracts/fixtures/book-detail.json');
 const health = require('../../../contracts/fixtures/health.json');
-const integrationPending = require('../../../contracts/fixtures/error-501-chuc_nang_chua_tich_hop.json');
 
 assert.ok(process.env.TEST_DATABASE_URL, 'Cần đặt TEST_DATABASE_URL cho PostgreSQL demo đã seed.');
 process.env.DATABASE_URL = process.env.TEST_DATABASE_URL;
@@ -163,14 +162,10 @@ test('staff sees seeded reader states, open loans and unpaid fines', async () =>
   assert.deepEqual(filtered.body, { data: [first], meta: { page: 1, pageSize: 1, total: 1 } });
 });
 
-test('loans placeholders require the expected roles before returning 501', async () => {
+test('loans routes require the expected roles (business cases in loans.test.js)', async () => {
   const create = api + '/phieu-muon';
   const myLoans = api + '/ban-doc/toi/dang-muon';
   const body = { banDocId: ids.readerId, banSachId: ids.availableCopyId };
-  assert.deepEqual(await request(create, { token: tokens.THU_THU, method: 'POST', body }),
-    { status: 501, body: integrationPending });
-  assert.deepEqual(await request(myLoans, { token: tokens.BAN_DOC }),
-    { status: 501, body: integrationPending });
   await expectError(request(create, { token: tokens.BAN_DOC, method: 'POST', body }),
     403, 'KHONG_CO_QUYEN');
   await expectError(request(myLoans, { token: tokens.ADMIN }), 403, 'KHONG_CO_QUYEN');

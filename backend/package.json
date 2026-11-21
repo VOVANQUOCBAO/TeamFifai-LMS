@@ -7,7 +7,7 @@
     "start": "node src/index.js",
     "db:schema": "node scripts/database.js schema",
     "db:seed": "node scripts/database.js seed",
-    "test": "node --test tests/integration/platform.test.js"
+    "test": "node --test --test-concurrency=1 tests/integration/platform.test.js tests/integration/loans.test.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
