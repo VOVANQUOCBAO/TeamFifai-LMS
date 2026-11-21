@@ -13,9 +13,25 @@
             android:name=".ui.dashboard.DashboardActivity"
             android:exported="false" />
 
-      <activity
-        android:name=".ui.catalog.books.BooksActivity"
-        android:exported="false" />
+        <activity
+            android:name=".ui.catalog.books.BooksActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.catalog.books.BookDetailActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.catalog.categories.CategoriesActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.readers.ReadersActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.loans.LoansActivity"
+            android:exported="false" />
 
         <activity
             android:name=".ui.auth.LoginActivity"
@@ -28,5 +44,7 @@
 
         </activity>
 
+            <activity android:name=".ui.fines.FinesActivity" android:exported="false" />
+        <activity android:name=".ui.reports.ReportsActivity" android:exported="false" />
     </application>
 </manifest>
