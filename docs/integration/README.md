@@ -58,9 +58,29 @@ Test tự dọn phiếu đã tạo nên DB demo trở về trạng thái seed sa
 | Build mock: nhãn DEMO, sai mật khẩu báo lỗi, đăng nhập fixture → 1 sách fixture | Đạt |
 | Unit test JVM (`FormattersTest`, đổi UTC → giờ VN, ngày hạn thẻ) 3/3 | Đạt |
 
+### Bản deploy trên Internet (21/11/2026)
+
+- **API:** `https://teamfifai-lms-api.onrender.com` · base URL cho app: `https://teamfifai-lms-api.onrender.com/api/v1/`
+- Render Web Service `teamfifai-lms-api` (Free, Singapore→Supabase `ap-southeast-1`), Blueprint từ `render.yaml`, nhánh `member2/integration`, commit đầu tiên deploy `7aa7710`.
+- Supabase project `wmvkyeiywscdrwxyuzas` (Singapore). `schema.sql` + `seed.sql` chạy trong SQL Editor trên DB trống → 10 bảng, 20 sách, 40 bản, 10 bạn đọc, 12 tài khoản bcrypt, 6 phiếu, 2 phạt. Kết nối qua Session pooler cổng 5432, SSL có kiểm tra CA `Supabase Root 2021 CA`.
+
+| Ca gọi thẳng API đã deploy | Kết quả |
+|---|---|
+| `GET /health` | 200 `{"status":"ok","database":"ok"}` |
+| `GET /sach` không token | 401 `TOKEN_KHONG_HOP_LE` |
+| `GET /sach` (BAN_DOC) / `?tuKhoa=Nam` / `GET /sach/{id}` | 200 · 20 nhan đề · lọc đúng · chi tiết BS0001 RANH, BS0002 DANG_MUON |
+| `GET /ban-doc` THU_THU / BAN_DOC | 200 (10) / 403 `KHONG_CO_QUYEN` |
+| `POST /phieu-muon` bằng token BAN_DOC | 403 `KHONG_CO_QUYEN` |
+| `POST /phieu-muon` BD0003 (thẻ hết hạn) | 409 `THE_HET_HAN` |
+| `POST /phieu-muon` BD0008 + BS0003 | 201, phiếu `82e94783-…` |
+| Mượn lại BS0003 cho BD0009 | 409 `BAN_SACH_KHONG_SAN_SANG` |
+| `GET /ban-doc/toi/dang-muon` token BD0008 / BD0001 | 200, thấy đúng phiếu của mình / danh sách rỗng |
+
+Phiếu thử BD0008/BS0003 còn trong DB demo (chưa xóa); cặp demo chính BD0001 + BS0001 vẫn nguyên trạng thái seed.
+
 ## 5. Chưa thực hiện / còn mở
 
-- **Deploy Render + Supabase: CHƯA.** Cần tài khoản của nhóm. Làm theo mục 6, rồi build lại hai APK live với URL HTTPS thật.
+- **Deploy Render + Supabase: ĐÃ XONG** (xem trên). APK Android live trỏ Render đã build.
 - **Flutter: CHƯA build lại trên máy tích hợp** (máy này chưa cài Flutter SDK). P4 báo `flutter analyze` sạch, 20/20 test, build APK mock đạt. Luồng Flutter live mới được chứng minh ở mức API (curl bằng token bạn đọc), chưa chạy app thật với backend.
 - Chưa cài APK lên điện thoại thật.
 - Nghiệp vụ trả, gia hạn, đặt trước 48 giờ, phạt bậc thang, báo cáo, nhắc hạn: mốc sau. Seed hiện 20 nhan đề/40 bản/10 bạn đọc; đề yêu cầu tối thiểu 300/700/200/400 phiếu/40 đặt trước trước khi bảo vệ.
