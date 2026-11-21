@@ -3,48 +3,40 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Cleartext chỉ để thử backend cục bộ (http://10.0.2.2:3000) trên emulator; bản demo dùng HTTPS Render. -->
     <application
         android:allowBackup="false"
         android:label="@string/app_name"
         android:theme="@style/Theme.AdminAndroid"
         android:usesCleartextTraffic="true">
 
-        <activity
-            android:name=".ui.dashboard.DashboardActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".ui.catalog.books.BooksActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".ui.catalog.books.BookDetailActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".ui.catalog.categories.CategoriesActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".ui.readers.ReadersActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".ui.loans.LoansActivity"
-            android:exported="false" />
-
+        <!-- Màn hình 1: đăng nhập -->
         <activity
             android:name=".ui.auth.LoginActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
-            <activity android:name=".ui.fines.FinesActivity" android:exported="false" />
+        <!-- Màn hình 2: danh sách sách -->
+        <activity
+            android:name=".ui.catalog.books.BooksActivity"
+            android:exported="false" />
+
+        <!-- Màn hình 3: cho mượn -->
+        <activity
+            android:name=".ui.loans.CreateLoanActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.catalog.books.BooksActivity" />
+
+        <!-- Prototype giao diện các module mốc sau (dữ liệu demo); chỉ mở từ menu ở chế độ mock. -->
+        <activity android:name=".ui.dashboard.DashboardActivity" android:exported="false" />
+        <activity android:name=".ui.catalog.categories.CategoriesActivity" android:exported="false" />
+        <activity android:name=".ui.readers.ReadersActivity" android:exported="false" />
+        <activity android:name=".ui.loans.LoansActivity" android:exported="false" />
+        <activity android:name=".ui.fines.FinesActivity" android:exported="false" />
         <activity android:name=".ui.reports.ReportsActivity" android:exported="false" />
     </application>
 </manifest>

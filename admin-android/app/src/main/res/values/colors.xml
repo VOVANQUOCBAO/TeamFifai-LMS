@@ -1,0 +1,11 @@
+<resources>
+    <color name="navy">#142752</color>
+    <color name="blue">#2B5BBE</color>
+    <color name="demo_bg">#FFF3CD</color>
+    <color name="demo_text">#7A5300</color>
+    <color name="ok_bg">#E6F4EA</color>
+    <color name="ok_text">#1E6B34</color>
+    <color name="error_bg">#FCE8E6</color>
+    <color name="error_text">#A50E0E</color>
+    <color name="muted">#5F6B7A</color>
+</resources>

@@ -1,4 +1,21 @@
 <resources>
-    <string name="app_name">Admin Thu vien</string>
-    <string name="login_placeholder">Man hinh dang nhap (chua lam)</string>
+    <string name="app_name">TeamFifai Admin Thư viện</string>
+    <string name="demo_banner">CHẾ ĐỘ DEMO · dữ liệu mẫu từ contracts/fixtures, không gọi backend</string>
+    <string name="login_title">TeamFifai · Thư viện</string>
+    <string name="login_subtitle">Đăng nhập dành cho ADMIN và THỦ THƯ</string>
+    <string name="email">Email</string>
+    <string name="password">Mật khẩu</string>
+    <string name="login">Đăng nhập</string>
+    <string name="books_title">Sách · Cho mượn</string>
+    <string name="search_hint">Tìm theo nhan đề hoặc tác giả</string>
+    <string name="search">Tìm</string>
+    <string name="retry">Thử lại</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="demo_modules">Màn hình demo khác (mốc sau)</string>
+    <string name="create_loan_title">Cho mượn sách</string>
+    <string name="choose_copy">1. Chọn bản sách</string>
+    <string name="choose_reader">2. Chọn bạn đọc</string>
+    <string name="reader_search_hint">Tìm mã thẻ, họ tên, lớp</string>
+    <string name="submit_loan">Cho mượn</string>
+    <string name="empty_books">Không có sách phù hợp.</string>
 </resources>

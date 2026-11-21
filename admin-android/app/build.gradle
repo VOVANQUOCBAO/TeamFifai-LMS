@@ -1,27 +1,50 @@
 plugins { id 'com.android.application' }
 
+// Chế độ và URL đọc từ tham số Gradle để Người 2 build live mà không sửa Java/XML:
+//   gradlew.bat assembleDebug -PappMode=live -PapiBaseUrl=https://ten-app.onrender.com/api/v1/
+def appMode = (project.findProperty('appMode') ?: 'mock').toString().trim()
+def apiBaseUrl = (project.findProperty('apiBaseUrl') ?: '').toString().trim()
+if (!(appMode in ['mock', 'live'])) {
+    throw new GradleException("appMode chỉ nhận mock hoặc live (đang là '${appMode}')")
+}
+if (appMode == 'live') {
+    if (!(apiBaseUrl ==~ /^https?:\/\/.+/)) {
+        throw new GradleException('Build live cần -PapiBaseUrl=https://<backend>/api/v1/')
+    }
+    if (!apiBaseUrl.endsWith('/')) apiBaseUrl += '/'
+    if (!apiBaseUrl.endsWith('/api/v1/')) {
+        throw new GradleException('apiBaseUrl phải kết thúc bằng /api/v1/')
+    }
+}
+
 android {
     namespace 'com.teamfifai.libraryadmin'
-    compileSdk 34
+    compileSdk 36
     defaultConfig {
         applicationId 'com.teamfifai.libraryadmin'
         minSdk 24
         targetSdk 34
-        versionCode 1
-        versionName '0.1-skeleton'
-        buildConfigField 'String', 'BASE_URL', '"http://10.0.2.2:3000/"'
+        versionCode 2
+        versionName '0.11.0'
+        buildConfigField 'String', 'APP_MODE', "\"${appMode}\""
+        buildConfigField 'String', 'API_BASE_URL', "\"${apiBaseUrl}\""
     }
     buildFeatures { buildConfig true }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
+    testOptions { unitTests.returnDefaultValues = true }
 }
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.8.7'
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.8.7'
     implementation 'com.squareup.retrofit2:retrofit:2.11.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.11.0'
+    testImplementation 'junit:junit:4.13.2'
 }
