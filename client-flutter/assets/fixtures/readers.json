@@ -1,0 +1,21 @@
+{
+  "data": [
+    {
+      "id": "20000000-0000-4000-8000-000000000001",
+      "nguoiDungId": "10000000-0000-4000-8000-000000000003",
+      "maThe": "BD0001",
+      "hoTen": "Bạn đọc Demo",
+      "lopKhoa": "Lớp Demo",
+      "hanThe": "2099-12-31",
+      "trangThai": "BINH_THUONG",
+      "gioiHanMuon": 3,
+      "soDangMuon": 0,
+      "tienPhatConNo": 0
+    }
+  ],
+  "meta": {
+    "page": 1,
+    "pageSize": 20,
+    "total": 1
+  }
+}

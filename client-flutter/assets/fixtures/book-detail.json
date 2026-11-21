@@ -1,0 +1,31 @@
+{
+  "data": {
+    "id": "30000000-0000-4000-8000-000000000001",
+    "nhanDe": "Dế Mèn phiêu lưu ký",
+    "tacGia": "Tô Hoài",
+    "phanLoaiId": "40000000-0000-4000-8000-000000000001",
+    "nxb": null,
+    "namXb": null,
+    "isbn": null,
+    "anhBia": null,
+    "soBanRanh": 1,
+    "banSach": [
+      {
+        "id": "50000000-0000-4000-8000-000000000001",
+        "sachId": "30000000-0000-4000-8000-000000000001",
+        "maCaBiet": "BS0001",
+        "viTriKe": "A1-01",
+        "tinhTrang": "TOT",
+        "trangThai": "RANH"
+      },
+      {
+        "id": "50000000-0000-4000-8000-000000000002",
+        "sachId": "30000000-0000-4000-8000-000000000001",
+        "maCaBiet": "BS0002",
+        "viTriKe": "A1-01",
+        "tinhTrang": "TOT",
+        "trangThai": "DANG_MUON"
+      }
+    ]
+  }
+}
